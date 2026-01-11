@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ci-node-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ci-node-demo
+  template:
+    metadata:
+      labels:
+        app: ci-node-demo
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/kosebinu/ci-node-demo:latest
+          ports:
+            - containerPort: 3000
