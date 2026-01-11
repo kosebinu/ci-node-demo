@@ -1,6 +1,14 @@
 {
-
+  "name": "ci-node-demo",
+  "version": "1.0.0",
+  "description": "Node CI demo with Jest and GitHub Actions",
+  "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:ci": "jest --ci",
+    "build": "node scripts/build.js"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
