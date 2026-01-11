@@ -4,11 +4,15 @@
   "description": "Node CI demo with Jest and GitHub Actions",
   "main": "index.js",
   "scripts": {
+    "start" : "node src/server.js",
     "test": "jest",
     "test:ci": "jest --ci",
     "build": "node scripts/build.js"
   },
   "devDependencies": {
     "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }
