@@ -8,6 +8,7 @@ on:
 permissions:
   contents: read
   packages: write
+  id-token: write
 
 jobs:
   test:
@@ -108,3 +109,35 @@ jobs:
         run: |
           docker push ${IMAGE}:${TAG_SHA}
           docker push ${IMAGE}:${TAG_LATEST}
+
+  deploy-aks:
+    name: Deploy to AKS
+    runs-on: ubuntu-latest
+    needs: docker-push
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Set AKS context
+        run: |
+          az aks get-credentials -g rg-ci-node-demo -n aks-ci-node-demo --overwrite-existing
+          kubectl get nodes
+
+      - name: Apply manifests
+        run: |
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+
+      - name: Deploy new image (SHA tag)
+        run: |
+          kubectl set image deployment/ci-node-demo app=ghcr.io/${{ github.repository }}:${{ github.sha }}
+          kubectl rollout status deployment/ci-node-demo
