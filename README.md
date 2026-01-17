@@ -20,3 +20,15 @@ The goal of this repository is to showcase real-world DevOps practices: automate
 5. Pipeline connects to AKS
 6. Kubernetes Deployment image is updated using commit SHA tag
 7. Rolling update is executed and verified using rollout status
+
+---
+
+## Tech Stack
+
+- **Application:** Node.js  
+- **CI/CD:** GitHub Actions  
+- **Containerization:** Docker  
+- **Container Registry:** GitHub Container Registry (GHCR)  
+- **Orchestration:** Kubernetes  
+- **Cloud Platform:** Azure Kubernetes Service (AKS)  
+- **Authentication:** GitHub OIDC → Azure Entra ID  
